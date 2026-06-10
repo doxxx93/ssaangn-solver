@@ -1,0 +1,32 @@
+[package]
+name = "ssaangn-solver"
+version = "0.1.0"
+edition = "2024"
+description = "Local solver for the 쌍근(ssaangn) Korean 2-syllable word game"
+
+[[bin]]
+name = "ssaangn"
+path = "src/main.rs"
+
+[lib]
+name = "ssaangn_solver"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde_json = "1.0.150"
+
+# Native-only: the TUI binary and parallel scoring. Excluded from the wasm
+# build so the cdylib (browser solver) doesn't try to compile a terminal stack.
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+ratatui = "0.30"
+crossterm = "0.29"
+rayon = "1.12.0"
+
+# wasm-only: the browser bindings.
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2.123"
+console_error_panic_hook = "0.1"
+
+[profile.release]
+opt-level = 3

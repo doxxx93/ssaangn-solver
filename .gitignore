@@ -1,0 +1,8 @@
+/target
+/web/pkg
+
+# Third-party / scraped material — not for public redistribution.
+# The solver embeds only the derived data/*.json files; these originals are
+# dev-only inputs to scripts/build_*.py.
+/reference
+/data/raw

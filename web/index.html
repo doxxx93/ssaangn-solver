@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>쌍근 솔버</title>
+  <meta name="description" content="쌍근(ssaangn) 한글 2글자 워들 도우미 — 추측과 힌트를 넣으면 남은 후보와 다음에 칠 단어를 알려줍니다." />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main>
+    <header>
+      <h1>쌍근 솔버</h1>
+      <p class="sub">
+        <a href="https://ssaangn.com/" target="_blank" rel="noopener">쌍근</a> 한글 2글자 워들 도우미.
+        추측한 단어와 받은 힌트를 넣으면 남은 후보와 다음에 칠 단어를 알려줍니다.
+      </p>
+    </header>
+
+    <!-- 다음에 칠 추천 단어 -->
+    <section class="rec" id="rec">
+      <div class="rec-label">다음 추천</div>
+      <button class="rec-word" id="recWord" type="button" title="누르면 추측칸에 채워집니다">관심</button>
+      <div class="rec-note" id="recNote">첫 추측으로 추천하는 오프닝이에요. 누르면 아래 추측칸에 채워집니다.</div>
+    </section>
+
+    <!-- 추측 입력 -->
+    <section class="card entry">
+      <div class="step"><span class="num">1</span> 추측한 단어</div>
+      <input id="guess" type="text" maxlength="2" inputmode="text"
+             autocomplete="off" placeholder="예) 관심" />
+
+      <div class="step"><span class="num">2</span> 글자마다 받은 힌트를 고르세요</div>
+      <div class="clues">
+        <div class="syl" data-syl="0">
+          <div class="syl-head">첫 글자 <b id="ch0">고르기</b></div>
+          <div class="emoji-row" data-row="0"></div>
+        </div>
+        <div class="syl" data-syl="1">
+          <div class="syl-head">둘째 글자 <b id="ch1">고르기</b></div>
+          <div class="emoji-row" data-row="1"></div>
+        </div>
+      </div>
+
+      <button class="primary" id="apply" type="button" disabled>적용</button>
+      <p class="msg" id="msg"></p>
+    </section>
+
+    <!-- 입력 기록 -->
+    <section class="card history hidden" id="historyCard">
+      <div class="card-head">
+        <h2>입력 기록</h2>
+        <div class="row-actions">
+          <button id="undo" type="button">되돌리기</button>
+          <button id="reset" type="button">초기화</button>
+        </div>
+      </div>
+      <ol id="history" class="hist"></ol>
+    </section>
+
+    <!-- 호박 힌트 -->
+    <section class="card pumpkin">
+      <div class="card-head"><h2>🎃 호박 힌트</h2></div>
+      <p class="hint-help">정답 두 글자 어딘가에 들어있는 자음/모음 1개를 알려줄 때 사용해요.</p>
+      <div class="pumpkin-row">
+        <input id="pumpkin" type="text" maxlength="1" autocomplete="off" placeholder="예) ㅏ" />
+        <button id="pumpkinApply" type="button">적용</button>
+      </div>
+    </section>
+
+    <!-- 결과 -->
+    <section class="card results">
+      <div class="card-head">
+        <h2>남은 후보 <span id="remCount" class="count">—</span></h2>
+        <span id="wideBadge" class="badge hidden">전체 사전 검색 중</span>
+      </div>
+      <div id="remaining" class="chips"></div>
+
+      <h2 class="sugg-title">추천 후보 <span class="hint-help inline">예상 잔여가 작을수록 좋아요</span></h2>
+      <ol id="suggestions" class="sugg"></ol>
+    </section>
+
+    <footer>
+      <p>🥕 당근 완전일치 · 🍄 버섯 자모2+·초성O · 🧄 마늘 자모2+·초성X ·
+         🍆 가지 자모1 · 🍌 바나나 반대쪽 글자에 · 🍎 사과 어디에도 없음</p>
+    </footer>
+  </main>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

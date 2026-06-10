@@ -1,0 +1,209 @@
+:root {
+  --bg: #14161a;
+  --panel: #1d2026;
+  --panel-2: #262a32;
+  --line: #333842;
+  --text: #e8eaed;
+  --muted: #9aa0aa;
+  --accent: #ffb43a;
+  --accent-ink: #2a1c00;
+  --good: #7bd88f;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at 50% -10%, #1b1f27 0%, var(--bg) 60%);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    "Segoe UI", "Noto Sans KR", sans-serif;
+  line-height: 1.5;
+}
+
+main {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 22px 16px 48px;
+}
+
+header h1 { margin: 0 0 4px; font-size: 1.7rem; }
+.sub { margin: 0 0 22px; color: var(--muted); font-size: 0.92rem; }
+a { color: var(--accent); }
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.card.hidden { display: none; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.card h2 { font-size: 1.05rem; margin: 0 0 12px; }
+.card-head h2 { margin-bottom: 0; }
+
+/* 추천 배너 */
+.rec {
+  background: linear-gradient(180deg, #232733, var(--panel));
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.rec-label { color: var(--muted); font-size: 0.85rem; letter-spacing: 0.04em; }
+.rec-word {
+  display: inline-block;
+  margin: 4px 0 4px;
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 14px;
+  border-radius: 10px;
+}
+.rec-word:hover { background: var(--panel-2); }
+.rec-word.none { color: var(--muted); font-size: 1.4rem; cursor: default; }
+.rec-word.none:hover { background: none; }
+.rec-note { color: var(--muted); font-size: 0.82rem; }
+
+/* 단계 라벨 */
+.step {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.9rem; color: var(--muted);
+  margin: 4px 0 8px;
+}
+.step:not(:first-child) { margin-top: 18px; }
+.num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent); color: var(--accent-ink);
+  font-size: 0.75rem; font-weight: 700;
+}
+
+input[type="text"] {
+  width: 100%;
+  font-size: 1.3rem;
+  padding: 12px 14px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  text-align: center;
+}
+input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+
+.clues { display: flex; flex-direction: column; gap: 14px; }
+.syl-head { font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
+.syl-head b { color: var(--accent); font-weight: 600; }
+
+.emoji-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 7px; }
+.emoji-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 9px 2px 7px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  cursor: pointer;
+  line-height: 1;
+  transition: transform 0.05s, background 0.1s;
+}
+.emoji-btn .e { font-size: 1.45rem; }
+.emoji-btn .n { font-size: 0.68rem; color: var(--muted); }
+.emoji-btn:active { transform: scale(0.93); }
+.emoji-btn.sel {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.emoji-btn.sel .n { color: var(--accent-ink); font-weight: 700; }
+
+button { font-family: inherit; font-size: 1rem; color: var(--text); }
+.primary {
+  width: 100%;
+  padding: 14px;
+  margin-top: 18px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.row-actions { display: flex; gap: 8px; }
+.row-actions button {
+  padding: 7px 14px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.row-actions button:hover { border-color: var(--accent); }
+
+.msg { min-height: 1.2em; margin: 12px 2px 0; font-size: 0.9rem; color: var(--muted); }
+.msg.err { color: #ff8b6b; }
+
+/* 입력 기록 */
+.hist { margin: 12px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.hist li {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--panel-2); border: 1px solid var(--line);
+  border-radius: 9px; padding: 8px 12px;
+}
+.hist .hw { font-size: 1.15rem; font-weight: 600; min-width: 2.6em; }
+.hist .he { font-size: 1.15rem; letter-spacing: 0.1em; }
+.hist .tag { color: var(--muted); font-size: 0.85rem; }
+
+/* 호박 */
+.hint-help { color: var(--muted); font-size: 0.84rem; margin: 0 0 12px; }
+.hint-help.inline { display: inline; font-size: 0.78rem; margin: 0; font-weight: 400; }
+.pumpkin-row { display: flex; gap: 10px; }
+.pumpkin-row input { flex: 1; }
+.pumpkin-row button {
+  padding: 0 20px; background: var(--panel-2);
+  border: 1px solid var(--line); border-radius: 10px; cursor: pointer;
+}
+.pumpkin-row button:hover { border-color: var(--accent); }
+
+/* 결과 */
+.count { color: var(--accent); }
+.badge {
+  font-size: 0.75rem; padding: 3px 8px; border-radius: 20px;
+  background: #3a2a12; color: var(--accent); border: 1px solid var(--accent);
+}
+.badge.hidden { display: none; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  background: var(--panel-2); border: 1px solid var(--line);
+  border-radius: 8px; padding: 6px 11px; font-size: 1.05rem;
+}
+.chips .more { color: var(--muted); align-self: center; font-size: 0.85rem; }
+
+.sugg-title { margin-top: 22px !important; }
+.sugg { margin: 0; padding-left: 0; list-style: none; }
+.sugg li {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 13px; background: var(--panel-2);
+  border: 1px solid var(--line); border-radius: 10px; margin-bottom: 8px;
+  cursor: pointer;
+}
+.sugg li:hover { border-color: var(--accent); }
+.sugg .rank { color: var(--muted); font-size: 0.85rem; min-width: 1.2em; }
+.sugg .w { font-size: 1.2rem; font-weight: 600; }
+.sugg .cand {
+  color: var(--good); font-size: 0.72rem;
+  border: 1px solid var(--good); border-radius: 20px; padding: 1px 7px;
+}
+.sugg .meta { color: var(--muted); font-size: 0.82rem; margin-left: auto; }
+
+footer { margin-top: 26px; color: var(--muted); font-size: 0.78rem; line-height: 1.7; }
+.empty { color: var(--muted); font-size: 0.9rem; }
