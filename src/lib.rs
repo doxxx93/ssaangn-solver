@@ -101,27 +101,28 @@ mod wasm_api {
             } else {
                 &self.solver
             };
-            // Two distinct facts the UI presents separately:
+            // Two facts the UI presents:
             //   `remaining`  — the still-possible answers ("the answer is one of
             //                   these"), ranked by prior likelihood.
-            //   `suggestions`— the best words to *play next*, ranked by expected
-            //                   remaining pool. Drawn from the whole answer pool
-            //                   (`Candidates`), so the top pick may be a word that
-            //                   can't be the answer but splits the survivors best
-            //                   (a "probe"). The UI shows the reduction (N → ~M)
-            //                   and an `is_candidate` flag so this reads as intended
-            //                   rather than confusing. Probes measurably win in
-            //                   fewer guesses (in-pool avg 4.164 vs 4.177 for
-            //                   candidates-only).
+            //   `suggestions`— which of those to *play next*, ranked by expected
+            //                   remaining pool. Drawn ONLY from the remaining pool
+            //                   (`Remaining`), never the whole dictionary, so every
+            //                   suggestion is itself a possible answer. This means a
+            //                   suggestion can never contain a ruled-out (제외) jamo —
+            //                   recommending a word built from excluded letters reads
+            //                   as broken. The "probe" alternative (whole-pool
+            //                   `Candidates`) narrows marginally faster (in-pool avg
+            //                   4.164 vs 4.177) but surfaces non-answer words and
+            //                   confused users repeatedly; the ~0.013-guess gain
+            //                   isn't worth it.
             let remaining = active.remaining_words_ranked();
             let suggestions: Vec<_> = active
-                .suggestions_ex(8, GuessPool::Candidates)
+                .suggestions_ex(8, GuessPool::Remaining)
                 .iter()
                 .map(|s| {
                     serde_json::json!({
                         "word": s.word,
                         "expected": s.expected_remaining,
-                        "is_candidate": s.is_candidate,
                     })
                 })
                 .collect();

@@ -159,8 +159,8 @@ function render() {
       li.innerHTML =
         `<span class="rank">${i + 1}</span>` +
         `<span class="w">${s.word}</span>` +
-        (s.is_candidate ? '<span class="cand">✓ 정답 가능</span>' : '') +
-        // 후보가 2개 이하면 "1개→약1개" 류가 중복 노이즈라 생략.
+        // 추천은 전부 정답 가능 후보(Remaining 풀)라 별도 뱃지는 중복이라 생략.
+        // 후보가 2개 이하면 "1개→약1개" 류도 노이즈라 생략.
         (n > 2 ? `<span class="meta">${n}개 → 약 ${after}개</span>` : '');
       li.addEventListener('click', () => fillGuess(s.word));
       sg.appendChild(li);
