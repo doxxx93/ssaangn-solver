@@ -128,8 +128,9 @@ button { font-family: inherit; font-size: 1rem; color: var(--text); }
 .hist li {
   display: flex; align-items: center; gap: 10px;
   background: var(--panel-2); border: 1px solid var(--line);
-  border-radius: 9px; padding: 8px 12px;
+  border-radius: 9px; padding: 6px 12px;
 }
+.hist li:has(.tag) { background: transparent; border-style: dashed; } /* 호박 힌트 줄은 가볍게 */
 .hist .hw { font-size: 1.15rem; font-weight: 600; min-width: 2.6em; }
 .hist .he { font-size: 1.15rem; letter-spacing: 0.1em; }
 .hist .tag { color: var(--muted); font-size: 0.85rem; }
@@ -158,18 +159,21 @@ button { font-family: inherit; font-size: 1rem; color: var(--text); }
 .jamo-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .jamo-head h2 { margin: 0; }
 .jamo-legend { color: var(--muted); font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px; }
-.jamo-legend .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-left: 8px; }
+.jamo-legend .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; margin-left: 8px; border: 1px solid transparent; }
 .jamo-board { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
 .jamo-row { display: flex; justify-content: center; gap: 5px; }
 .jkey {
   flex: 1 1 0; max-width: 44px; padding: 7px 0; text-align: center; font-size: 1rem;
   border-radius: 7px; border: 1px solid var(--line);
 }
+/* 3-state, 쌍근 게임과 같은 색 의미: 확정=주황 / 가능=중립 / 제외=빨강 */
 .jkey.in, .dot.in { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-.jkey.out, .dot.out { background: #2a2d34; color: #5a606b; border-color: #2a2d34; }
-.jkey.maybe, .dot.maybe { background: var(--panel-2); color: var(--text); }
+.jkey.maybe, .dot.maybe { background: var(--panel-2); color: var(--text); border-color: var(--line); }
+.jkey.out, .dot.out { background: #c0392b; color: #fff; border-color: #c0392b; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+/* .chips가 display:flex라 [hidden] 속성을 덮어쓰므로 명시적으로 숨김 (접기 동작) */
+.chips[hidden] { display: none; }
 .chip {
   background: var(--panel-2); border: 1px solid var(--line); color: var(--text);
   border-radius: 8px; padding: 6px 11px; font-size: 1.05rem; cursor: pointer;
@@ -180,14 +184,14 @@ button { font-family: inherit; font-size: 1rem; color: var(--text); }
 .sugg-title { margin-top: 22px !important; }
 .sugg { margin: 0; padding-left: 0; list-style: none; }
 .sugg li {
-  display: flex; align-items: center; gap: 12px;
-  padding: 11px 13px; background: var(--panel-2);
-  border: 1px solid var(--line); border-radius: 10px; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; background: var(--panel-2);
+  border: 1px solid var(--line); border-radius: 9px; margin-bottom: 6px;
   cursor: pointer;
 }
 .sugg li:hover { border-color: var(--accent); }
 .sugg .rank { color: var(--muted); font-size: 0.85rem; min-width: 1.2em; }
-.sugg .w { font-size: 1.2rem; font-weight: 600; }
+.sugg .w { font-size: 1.1rem; font-weight: 600; }
 .sugg .cand {
   color: var(--good); font-size: 0.72rem;
   border: 1px solid var(--good); border-radius: 20px; padding: 1px 7px;

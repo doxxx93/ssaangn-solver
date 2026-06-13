@@ -148,7 +148,8 @@ function render() {
       '<li class="empty">일치하는 단어가 없어요. 입력한 힌트를 다시 확인해 보세요.</li>';
   } else {
     const n = st.remaining_count;
-    st.suggestions.forEach((s, i) => {
+    // 상위 6개만 — 그 아래는 후보 축소량이 거의 같아 변별이 없음. 전체 가능 단어는 '남은 후보'에.
+    st.suggestions.slice(0, 6).forEach((s, i) => {
       // 후보가 적게 남을수록 변별이 중요하므로 10개 미만은 소수 1자리로.
       const after = s.expected < 9.95 ? s.expected.toFixed(1) : Math.round(s.expected);
       const li = document.createElement('li');
