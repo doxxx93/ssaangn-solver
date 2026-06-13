@@ -36,7 +36,6 @@ function buildEmojiRows() {
         row.querySelectorAll('.emoji-btn').forEach((x) =>
           x.classList.toggle('sel', x.dataset.d === sel[s])
         );
-        $(`ch${s}`).textContent = sel[s] ? EMOJI[sel[s]] : '고르기';
         refreshApply();
       });
       row.appendChild(b);
@@ -47,8 +46,6 @@ function buildEmojiRows() {
 function clearClues() {
   sel = [null, null];
   document.querySelectorAll('.emoji-btn').forEach((x) => x.classList.remove('sel'));
-  $('ch0').textContent = '고르기';
-  $('ch1').textContent = '고르기';
 }
 
 function validGuess() {
