@@ -41,7 +41,12 @@
 
     <!-- 결과 -->
     <section class="card results">
-      <!-- 자모 현황: 확정 포함 / 긴가민가 / 제외 -->
+      <!-- 다음에 칠 단어 (메인 추천) — 입력칸 바로 아래에 둬서 플레이 루프를 좁힘 -->
+      <h2 class="sugg-title first">다음에 칠 단어</h2>
+      <p class="hint-help">정답이 아니어도 <b>후보를 가장 많이 줄이는 단어</b>를 위에 둬요. 누르면 추측칸에 채워집니다.</p>
+      <ol id="suggestions" class="sugg"></ol>
+
+      <!-- 자모 현황: 확정 / 가능 / 제외 (참고용) -->
       <div class="jamo-wrap" id="jamoWrap" hidden>
         <div class="jamo-head">
           <h2>자모 현황</h2>
@@ -51,11 +56,6 @@
         </div>
         <div id="jamoBoard" class="jamo-board"></div>
       </div>
-
-      <!-- 다음에 칠 단어 (메인 추천) -->
-      <h2 class="sugg-title">다음에 칠 단어</h2>
-      <p class="hint-help">정답이 아니어도 <b>후보를 가장 많이 줄이는 단어</b>를 위에 둬요. 누르면 추측칸에 채워집니다.</p>
-      <ol id="suggestions" class="sugg"></ol>
 
       <!-- 남은 후보 (정답 가능 단어들, 접힘) -->
       <div class="rem-head">

@@ -155,7 +155,7 @@ button { font-family: inherit; font-size: 1rem; color: var(--text); }
 .badge.hidden { display: none; }
 
 /* 자모 현황 보드 */
-.jamo-wrap { margin-bottom: 18px; }
+.jamo-wrap { margin: 24px 0 18px; }
 .jamo-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .jamo-head h2 { margin: 0; }
 .jamo-legend { color: var(--muted); font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px; }
@@ -182,6 +182,7 @@ button { font-family: inherit; font-size: 1rem; color: var(--text); }
 .chips .more { color: var(--muted); align-self: center; font-size: 0.85rem; }
 
 .sugg-title { margin-top: 22px !important; }
+.sugg-title.first { margin-top: 0 !important; }
 .sugg { margin: 0; padding-left: 0; list-style: none; }
 .sugg li {
   display: flex; align-items: center; gap: 10px;
