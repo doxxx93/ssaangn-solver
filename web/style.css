@@ -28,8 +28,7 @@ main {
   padding: 16px 16px 40px;
 }
 
-header h1 { margin: 0 0 3px; font-size: 1.4rem; }
-.sub { margin: 0 0 14px; color: var(--muted); font-size: 0.84rem; }
+header h1 { margin: 0 0 14px; font-size: 1.4rem; }
 a { color: var(--accent); }
 
 .card {
@@ -138,7 +137,6 @@ button { font-family: inherit; font-size: 1rem; color: var(--text); }
 /* 입력 카드 안 보조 섹션 (호박 힌트) — 추측 입력과 구분되도록 윗 구분선 */
 .subsection { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
 .emoji-mark { font-size: 1rem; }
-.opt { color: var(--muted); font-size: 0.78rem; font-weight: 400; }
 .tip {
   margin: 0 0 10px; padding: 8px 11px; font-size: 0.82rem; color: var(--text);
   background: rgba(255, 180, 58, 0.12); border: 1px solid var(--accent); border-radius: 9px;
@@ -175,7 +173,6 @@ button { font-family: inherit; font-size: 1rem; color: var(--text); }
 
 .sugg-title { margin-top: 22px !important; }
 .sugg-title.first { margin-top: 0 !important; }
-.rec-count { color: var(--muted); font-size: 0.82rem; font-weight: 400; }
 /* 2열 그리드: 박스가 반폭이 되고 세로 길이도 절반이라 스크롤이 줄어듦 */
 .sugg { margin: 0; padding-left: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .sugg li {

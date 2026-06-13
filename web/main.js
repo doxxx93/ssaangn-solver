@@ -96,8 +96,6 @@ function render() {
 
   $('remCount').textContent = `${st.remaining_count}개`;
   $('wideBadge').classList.toggle('hidden', !st.using_wide);
-  // 추천 헤더에 남은 후보 수를 같이 보여줘 진행 상황이 화면 상단에서 바로 보이게.
-  $('recCount').textContent = log.length > 0 ? `· 남은 ${st.remaining_count}개` : '';
 
   // 다음에 칠 단어 (메인 추천). 정답이 아닌 단어라도 후보를 가장 많이 줄이면 위로.
   const sg = $('suggestions');

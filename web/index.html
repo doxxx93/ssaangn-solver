@@ -11,10 +11,6 @@
   <main>
     <header>
       <h1>쌍근 솔버</h1>
-      <p class="sub">
-        <a href="https://ssaangn.com/" target="_blank" rel="noopener">쌍근</a> 한글 2글자 워들 도우미.
-        추측한 단어와 받은 힌트를 넣으면 남은 후보와 다음에 칠 단어를 알려줍니다.
-      </p>
     </header>
 
     <!-- 추측 입력 -->
@@ -40,8 +36,8 @@
 
       <!-- 호박 힌트: 같은 '입력' 카드에 묶음. 첫 추측 직후 사용이 최적이라 그때 안내 -->
       <div class="subsection">
-        <div class="step"><span class="emoji-mark">🎃</span> 호박 힌트 <span class="opt">(선택)</span></div>
-        <p class="hint-help">정답 두 글자 어딘가에 들어있는 자음/모음 1개를 받았을 때 넣어요.</p>
+        <div class="step"><span class="emoji-mark">🎃</span> 호박 힌트</div>
+        <p class="hint-help">정답에 든 자음/모음 1개를 받으면 넣어요.</p>
         <p class="tip" id="pumpkinTip" hidden>💡 호박 힌트는 <b>첫 추측 직후</b> 넣을 때 후보가 가장 많이 줄어요.</p>
         <div class="pumpkin-row">
           <input id="pumpkin" type="text" maxlength="1" autocomplete="off" placeholder="예) ㅏ" />
@@ -53,7 +49,7 @@
     <!-- 결과 -->
     <section class="card results">
       <!-- 다음에 칠 단어 (메인 추천) — 입력칸 바로 아래에 둬서 플레이 루프를 좁힘 -->
-      <h2 class="sugg-title first">다음에 칠 단어 <span id="recCount" class="rec-count"></span></h2>
+      <h2 class="sugg-title first">다음에 칠 단어</h2>
       <p class="hint-help">남은 후보 중 <b>후보를 가장 빨리 줄이는 순서</b>예요. 누르면 추측칸에 채워집니다.</p>
       <ol id="suggestions" class="sugg"></ol>
 
