@@ -101,16 +101,21 @@ mod wasm_api {
             } else {
                 &self.solver
             };
+            // Two distinct facts the UI presents separately:
+            //   `remaining`  — the still-possible answers ("the answer is one of
+            //                   these"), ranked by prior likelihood.
+            //   `suggestions`— the best words to *play next*, ranked by expected
+            //                   remaining pool. Drawn from the whole answer pool
+            //                   (`Candidates`), so the top pick may be a word that
+            //                   can't be the answer but splits the survivors best
+            //                   (a "probe"). The UI shows the reduction (N → ~M)
+            //                   and an `is_candidate` flag so this reads as intended
+            //                   rather than confusing. Probes measurably win in
+            //                   fewer guesses (in-pool avg 4.164 vs 4.177 for
+            //                   candidates-only).
             let remaining = active.remaining_words_ranked();
-            // Recommend only from words that can still be the answer (the remaining
-            // pool), not from eliminated "probe" words. Pure information-greedy
-            // probes (e.g. 멸치 against a 11-word pool) confuse: the top suggestion
-            // is then a word the answer can't be. Measured cost of dropping probes
-            // is negligible (in-pool avg 4.164→4.177, 0 fails either way) and it
-            // wins outright more often (2–3 guess games up), so suggestions are
-            // always a subset of the shown candidates.
             let suggestions: Vec<_> = active
-                .suggestions_ex(8, GuessPool::Remaining)
+                .suggestions_ex(8, GuessPool::Candidates)
                 .iter()
                 .map(|s| {
                     serde_json::json!({

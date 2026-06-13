@@ -44,34 +44,6 @@ a { color: var(--accent); }
 .card h2 { font-size: 1.05rem; margin: 0 0 12px; }
 .card-head h2 { margin-bottom: 0; }
 
-/* 추천 배너 */
-.rec {
-  background: linear-gradient(180deg, #232733, var(--panel));
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 18px;
-  margin-bottom: 18px;
-  text-align: center;
-}
-.rec-label { color: var(--muted); font-size: 0.85rem; letter-spacing: 0.04em; }
-.rec-word {
-  display: inline-block;
-  margin: 4px 0 4px;
-  font-size: 2.4rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  color: var(--accent);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 2px 14px;
-  border-radius: 10px;
-}
-.rec-word:hover { background: var(--panel-2); }
-.rec-word.none { color: var(--muted); font-size: 1.4rem; cursor: default; }
-.rec-word.none:hover { background: none; }
-.rec-note { color: var(--muted); font-size: 0.82rem; }
-
 /* 단계 라벨 */
 .step {
   display: flex; align-items: center; gap: 8px;
@@ -221,6 +193,19 @@ button { font-family: inherit; font-size: 1rem; color: var(--text); }
   border: 1px solid var(--good); border-radius: 20px; padding: 1px 7px;
 }
 .sugg .meta { color: var(--muted); font-size: 0.82rem; margin-left: auto; }
+.sugg li.empty { cursor: default; color: var(--muted); justify-content: center; font-size: 0.92rem; }
+
+/* 남은 후보 (접이식) */
+.rem-head { display: flex; align-items: center; gap: 10px; margin-top: 24px; }
+.rem-head h2 { margin: 0; }
+.rem-toggle {
+  margin-left: auto; background: var(--panel-2); border: 1px solid var(--line);
+  border-radius: 8px; padding: 5px 10px; font-size: 0.82rem; color: var(--muted);
+  cursor: pointer;
+}
+.rem-toggle:hover { border-color: var(--accent); color: var(--text); }
+#remNote { margin: 6px 0 0; }
+#remaining { margin-top: 10px; }
 
 footer { margin-top: 26px; color: var(--muted); font-size: 0.78rem; line-height: 1.7; }
 .empty { color: var(--muted); font-size: 0.9rem; }

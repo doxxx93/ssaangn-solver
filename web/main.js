@@ -114,6 +114,15 @@ function renderJamo(jamo) {
   });
 }
 
+let remExpanded = false; // 남은 후보 칩 펼침 여부
+
+// 펼침 토글만 반영 (솔버 재계산 없이 표시만 갱신).
+function updateRemView() {
+  $('remToggle').textContent = remExpanded ? '접기 ▴' : '모두 보기 ▾';
+  $('remNote').hidden = !remExpanded;
+  $('remaining').hidden = !remExpanded;
+}
+
 function render() {
   const st = JSON.parse(solver.state());
 
@@ -121,66 +130,64 @@ function render() {
   $('wideBadge').classList.toggle('hidden', !st.using_wide);
   renderJamo(st.jamo);
 
-  // 추천 배너
-  const recWord = $('recWord');
-  const recNote = $('recNote');
-  if (log.length === 0) {
-    recWord.textContent = OPENING;
-    recWord.classList.remove('none');
-    recNote.textContent = '첫 추측으로 추천하는 오프닝이에요. 누르면 아래 추측칸에 채워집니다.';
-  } else if (st.suggestions.length > 0) {
-    recWord.textContent = st.suggestions[0].word;
-    recWord.classList.remove('none');
-    recNote.textContent = '누르면 추측칸에 채워집니다.';
-  } else {
-    recWord.textContent = st.remaining_count === 0 ? '일치 없음' : '—';
-    recWord.classList.add('none');
-    recNote.textContent =
-      st.remaining_count === 0 ? '입력한 힌트를 다시 확인해 보세요.' : '';
-  }
-
-  // 남은 후보
-  const rem = $('remaining');
-  rem.innerHTML = '';
-  if (st.remaining.length === 0) {
-    rem.innerHTML = '<span class="empty">남은 후보가 없어요.</span>';
-  } else {
-    st.remaining.forEach((w) => {
-      const c = document.createElement('button');
-      c.type = 'button';
-      c.className = 'chip';
-      c.textContent = w;
-      c.title = '누르면 추측칸에 채워집니다';
-      c.addEventListener('click', () => fillGuess(w));
-      rem.appendChild(c);
-    });
-    const hidden = st.remaining_count - st.remaining.length;
-    if (hidden > 0) {
-      const more = document.createElement('span');
-      more.className = 'more';
-      more.textContent = `+${hidden}개 더`;
-      rem.appendChild(more);
-    }
-  }
-
-  // 추천 후보
+  // 다음에 칠 단어 (메인 추천). 정답이 아닌 단어라도 후보를 가장 많이 줄이면 위로.
   const sg = $('suggestions');
   sg.innerHTML = '';
-  if (st.suggestions.length === 0) {
-    sg.innerHTML = '<li class="empty">추천할 후보가 없어요.</li>';
+  if (log.length === 0) {
+    // 첫 수: 데이터로 검증된 추천 오프닝(관심).
+    const li = document.createElement('li');
+    li.title = '누르면 추측칸에 채워집니다';
+    li.innerHTML =
+      '<span class="rank">1</span>' +
+      `<span class="w">${OPENING}</span>` +
+      '<span class="meta">추천 오프닝</span>';
+    li.addEventListener('click', () => fillGuess(OPENING));
+    sg.appendChild(li);
+  } else if (st.suggestions.length === 0) {
+    sg.innerHTML =
+      '<li class="empty">일치하는 단어가 없어요. 입력한 힌트를 다시 확인해 보세요.</li>';
   } else {
+    const n = st.remaining_count;
     st.suggestions.forEach((s, i) => {
+      // 후보가 적게 남을수록 변별이 중요하므로 10개 미만은 소수 1자리로.
+      const after = s.expected < 9.95 ? s.expected.toFixed(1) : Math.round(s.expected);
       const li = document.createElement('li');
       li.title = '누르면 추측칸에 채워집니다';
       li.innerHTML =
         `<span class="rank">${i + 1}</span>` +
         `<span class="w">${s.word}</span>` +
-        (s.is_candidate ? '<span class="cand">정답 후보</span>' : '') +
-        `<span class="meta">예상 잔여 ${s.expected.toFixed(1)}</span>`;
+        (s.is_candidate ? '<span class="cand">✓ 정답 가능</span>' : '') +
+        `<span class="meta">${n}개 → 약 ${after}개</span>`;
       li.addEventListener('click', () => fillGuess(s.word));
       sg.appendChild(li);
     });
   }
+
+  // 남은 후보 (정답 가능 단어들). 기본 접힘, '모두 보기'로 펼침.
+  const hasRem = log.length > 0 && st.remaining_count > 0;
+  $('remToggle').hidden = !hasRem;
+  if (!hasRem) {
+    remExpanded = false;
+  }
+  const rem = $('remaining');
+  rem.innerHTML = '';
+  st.remaining.forEach((w) => {
+    const c = document.createElement('button');
+    c.type = 'button';
+    c.className = 'chip';
+    c.textContent = w;
+    c.title = '누르면 추측칸에 채워집니다';
+    c.addEventListener('click', () => fillGuess(w));
+    rem.appendChild(c);
+  });
+  const hidden = st.remaining_count - st.remaining.length;
+  if (hidden > 0) {
+    const more = document.createElement('span');
+    more.className = 'more';
+    more.textContent = `+${hidden}개 더`;
+    rem.appendChild(more);
+  }
+  updateRemView();
 
   renderHistory();
 }
@@ -236,8 +243,9 @@ async function main() {
     if (e.key === 'Enter') doApply();
   });
   applyEl.addEventListener('click', doApply);
-  $('recWord').addEventListener('click', () => {
-    if (!$('recWord').classList.contains('none')) fillGuess($('recWord').textContent);
+  $('remToggle').addEventListener('click', () => {
+    remExpanded = !remExpanded;
+    updateRemView();
   });
   $('undo').addEventListener('click', () => {
     if (log.length === 0) return;
@@ -249,6 +257,7 @@ async function main() {
   $('reset').addEventListener('click', () => {
     solver.reset();
     log = [];
+    remExpanded = false;
     guessEl.value = '';
     clearClues();
     refreshApply();

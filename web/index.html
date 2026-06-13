@@ -17,13 +17,6 @@
       </p>
     </header>
 
-    <!-- 다음에 칠 추천 단어 -->
-    <section class="rec" id="rec">
-      <div class="rec-label">다음 추천</div>
-      <button class="rec-word" id="recWord" type="button" title="누르면 추측칸에 채워집니다">관심</button>
-      <div class="rec-note" id="recNote">첫 추측으로 추천하는 오프닝이에요. 누르면 아래 추측칸에 채워집니다.</div>
-    </section>
-
     <!-- 추측 입력 -->
     <section class="card entry">
       <div class="step"><span class="num">1</span> 추측한 단어</div>
@@ -59,14 +52,19 @@
         <div id="jamoBoard" class="jamo-board"></div>
       </div>
 
-      <div class="card-head">
+      <!-- 다음에 칠 단어 (메인 추천) -->
+      <h2 class="sugg-title">다음에 칠 단어</h2>
+      <p class="hint-help">정답이 아니어도 <b>후보를 가장 많이 줄이는 단어</b>를 위에 둬요. 누르면 추측칸에 채워집니다.</p>
+      <ol id="suggestions" class="sugg"></ol>
+
+      <!-- 남은 후보 (정답 가능 단어들, 접힘) -->
+      <div class="rem-head">
         <h2>남은 후보 <span id="remCount" class="count">—</span></h2>
         <span id="wideBadge" class="badge hidden">전체 사전 검색 중</span>
+        <button id="remToggle" class="rem-toggle" type="button" hidden>모두 보기 ▾</button>
       </div>
-      <div id="remaining" class="chips"></div>
-
-      <h2 class="sugg-title">추천 후보 <span class="hint-help inline">예상 잔여가 작을수록 좋아요</span></h2>
-      <ol id="suggestions" class="sugg"></ol>
+      <p class="hint-help" id="remNote" hidden>정답은 이 중 하나예요. 누르면 추측칸에 채워집니다.</p>
+      <div id="remaining" class="chips" hidden></div>
     </section>
 
     <!-- 호박 힌트 -->
