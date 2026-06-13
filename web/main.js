@@ -82,11 +82,44 @@ function renderHistory() {
   });
 }
 
+// 쌍근 게임과 같은 두벌식 키보드 배열 (쌍자음/ㅒㅖ는 윗줄). 자음 19 + 모음 14
+// 전부 포함하며, Rust state().jamo의 키와 동일.
+const JAMO_ROWS = [
+  ['ㅃ', 'ㅉ', 'ㄸ', 'ㄲ', 'ㅆ', 'ㅒ', 'ㅖ'],
+  ['ㅂ', 'ㅈ', 'ㄷ', 'ㄱ', 'ㅅ', 'ㅛ', 'ㅕ', 'ㅑ', 'ㅐ', 'ㅔ'],
+  ['ㅁ', 'ㄴ', 'ㅇ', 'ㄹ', 'ㅎ', 'ㅗ', 'ㅓ', 'ㅏ', 'ㅣ'],
+  ['ㅋ', 'ㅌ', 'ㅊ', 'ㅍ', 'ㅠ', 'ㅜ', 'ㅡ'],
+];
+
+function renderJamo(jamo) {
+  const wrap = $('jamoWrap');
+  const board = $('jamoBoard');
+  // jamo가 비어있으면(추측 전) 보드 숨김.
+  if (!jamo || Object.keys(jamo).length === 0) {
+    wrap.hidden = true;
+    return;
+  }
+  wrap.hidden = false;
+  board.innerHTML = '';
+  JAMO_ROWS.forEach((row) => {
+    const r = document.createElement('div');
+    r.className = 'jamo-row';
+    row.forEach((j) => {
+      const k = document.createElement('span');
+      k.className = `jkey ${jamo[j] || 'maybe'}`;
+      k.textContent = j;
+      r.appendChild(k);
+    });
+    board.appendChild(r);
+  });
+}
+
 function render() {
   const st = JSON.parse(solver.state());
 
   $('remCount').textContent = `${st.remaining_count}개`;
   $('wideBadge').classList.toggle('hidden', !st.using_wide);
+  renderJamo(st.jamo);
 
   // 추천 배너
   const recWord = $('recWord');
@@ -113,9 +146,12 @@ function render() {
     rem.innerHTML = '<span class="empty">남은 후보가 없어요.</span>';
   } else {
     st.remaining.forEach((w) => {
-      const c = document.createElement('span');
+      const c = document.createElement('button');
+      c.type = 'button';
       c.className = 'chip';
       c.textContent = w;
+      c.title = '누르면 추측칸에 채워집니다';
+      c.addEventListener('click', () => fillGuess(w));
       rem.appendChild(c);
     });
     const hidden = st.remaining_count - st.remaining.length;

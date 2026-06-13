@@ -46,16 +46,27 @@
       <p class="msg" id="msg"></p>
     </section>
 
-    <!-- 입력 기록 -->
-    <section class="card history hidden" id="historyCard">
-      <div class="card-head">
-        <h2>입력 기록</h2>
-        <div class="row-actions">
-          <button id="undo" type="button">되돌리기</button>
-          <button id="reset" type="button">초기화</button>
+    <!-- 결과 -->
+    <section class="card results">
+      <!-- 자모 현황: 확정 포함 / 긴가민가 / 제외 -->
+      <div class="jamo-wrap" id="jamoWrap" hidden>
+        <div class="jamo-head">
+          <h2>자모 현황</h2>
+          <span class="jamo-legend">
+            <i class="dot in"></i>확정 <i class="dot maybe"></i>가능 <i class="dot out"></i>제외
+          </span>
         </div>
+        <div id="jamoBoard" class="jamo-board"></div>
       </div>
-      <ol id="history" class="hist"></ol>
+
+      <div class="card-head">
+        <h2>남은 후보 <span id="remCount" class="count">—</span></h2>
+        <span id="wideBadge" class="badge hidden">전체 사전 검색 중</span>
+      </div>
+      <div id="remaining" class="chips"></div>
+
+      <h2 class="sugg-title">추천 후보 <span class="hint-help inline">예상 잔여가 작을수록 좋아요</span></h2>
+      <ol id="suggestions" class="sugg"></ol>
     </section>
 
     <!-- 호박 힌트 -->
@@ -68,16 +79,16 @@
       </div>
     </section>
 
-    <!-- 결과 -->
-    <section class="card results">
+    <!-- 입력 기록 -->
+    <section class="card history hidden" id="historyCard">
       <div class="card-head">
-        <h2>남은 후보 <span id="remCount" class="count">—</span></h2>
-        <span id="wideBadge" class="badge hidden">전체 사전 검색 중</span>
+        <h2>입력 기록</h2>
+        <div class="row-actions">
+          <button id="undo" type="button">되돌리기</button>
+          <button id="reset" type="button">초기화</button>
+        </div>
       </div>
-      <div id="remaining" class="chips"></div>
-
-      <h2 class="sugg-title">추천 후보 <span class="hint-help inline">예상 잔여가 작을수록 좋아요</span></h2>
-      <ol id="suggestions" class="sugg"></ol>
+      <ol id="history" class="hist"></ol>
     </section>
 
     <footer>
