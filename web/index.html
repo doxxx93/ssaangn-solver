@@ -37,12 +37,23 @@
 
       <button class="primary" id="apply" type="button" disabled>적용</button>
       <p class="msg" id="msg"></p>
+
+      <!-- 호박 힌트: 같은 '입력' 카드에 묶음. 첫 추측 직후 사용이 최적이라 그때 안내 -->
+      <div class="subsection">
+        <div class="step"><span class="emoji-mark">🎃</span> 호박 힌트 <span class="opt">(선택)</span></div>
+        <p class="hint-help">정답 두 글자 어딘가에 들어있는 자음/모음 1개를 받았을 때 넣어요.</p>
+        <p class="tip" id="pumpkinTip" hidden>💡 호박 힌트는 <b>첫 추측 직후</b> 넣을 때 후보가 가장 많이 줄어요.</p>
+        <div class="pumpkin-row">
+          <input id="pumpkin" type="text" maxlength="1" autocomplete="off" placeholder="예) ㅏ" />
+          <button id="pumpkinApply" type="button">적용</button>
+        </div>
+      </div>
     </section>
 
     <!-- 결과 -->
     <section class="card results">
       <!-- 다음에 칠 단어 (메인 추천) — 입력칸 바로 아래에 둬서 플레이 루프를 좁힘 -->
-      <h2 class="sugg-title first">다음에 칠 단어</h2>
+      <h2 class="sugg-title first">다음에 칠 단어 <span id="recCount" class="rec-count"></span></h2>
       <p class="hint-help">정답이 아니어도 <b>후보를 가장 많이 줄이는 단어</b>를 위에 둬요. 누르면 추측칸에 채워집니다.</p>
       <ol id="suggestions" class="sugg"></ol>
 
@@ -65,16 +76,6 @@
       </div>
       <p class="hint-help" id="remNote" hidden>정답은 이 중 하나예요. 누르면 추측칸에 채워집니다.</p>
       <div id="remaining" class="chips" hidden></div>
-    </section>
-
-    <!-- 호박 힌트 -->
-    <section class="card pumpkin">
-      <div class="card-head"><h2>🎃 호박 힌트</h2></div>
-      <p class="hint-help">정답 두 글자 어딘가에 들어있는 자음/모음 1개를 알려줄 때 사용해요.</p>
-      <div class="pumpkin-row">
-        <input id="pumpkin" type="text" maxlength="1" autocomplete="off" placeholder="예) ㅏ" />
-        <button id="pumpkinApply" type="button">적용</button>
-      </div>
     </section>
 
     <!-- 입력 기록 -->

@@ -128,6 +128,8 @@ function render() {
 
   $('remCount').textContent = `${st.remaining_count}개`;
   $('wideBadge').classList.toggle('hidden', !st.using_wide);
+  // 추천 헤더에 남은 후보 수를 같이 보여줘 진행 상황이 화면 상단에서 바로 보이게.
+  $('recCount').textContent = log.length > 0 ? `· 남은 ${st.remaining_count}개` : '';
   renderJamo(st.jamo);
 
   // 다음에 칠 단어 (메인 추천). 정답이 아닌 단어라도 후보를 가장 많이 줄이면 위로.
@@ -158,11 +160,17 @@ function render() {
         `<span class="rank">${i + 1}</span>` +
         `<span class="w">${s.word}</span>` +
         (s.is_candidate ? '<span class="cand">✓ 정답 가능</span>' : '') +
-        `<span class="meta">${n}개 → 약 ${after}개</span>`;
+        // 후보가 2개 이하면 "1개→약1개" 류가 중복 노이즈라 생략.
+        (n > 2 ? `<span class="meta">${n}개 → 약 ${after}개</span>` : '');
       li.addEventListener('click', () => fillGuess(s.word));
       sg.appendChild(li);
     });
   }
+
+  // 호박 힌트 최적 타이밍 안내: 첫 추측 직후(추측 1개, 힌트 아직 없음)에만 노출.
+  const guesses = log.filter((m) => m.kind === 'guess').length;
+  const usedHint = log.some((m) => m.kind === 'hint');
+  $('pumpkinTip').hidden = !(guesses === 1 && !usedHint);
 
   // 남은 후보 (정답 가능 단어들). 기본 접힘, '모두 보기'로 펼침.
   const hasRem = log.length > 0 && st.remaining_count > 0;
@@ -200,9 +208,15 @@ function fillGuess(word) {
   guessEl.focus();
 }
 
+// 적용/힌트 후, 새 추천이 화면 바닥에 묻히지 않도록 추천 영역을 시야에 올림.
+function scrollToNext() {
+  $('suggestions').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
 function doApply() {
   if (applyEl.disabled) return;
   const word = guessEl.value.trim();
+  const clue = `${EMOJI[sel[0]]}${EMOJI[sel[1]]}`; // 방금 친 단어+힌트를 메시지에 남김
   try {
     solver.guess(word, sel[0], sel[1]);
   } catch (e) {
@@ -214,7 +228,8 @@ function doApply() {
   clearClues();
   refreshApply();
   render();
-  setMsg(`“${word}” 기록됨.`);
+  setMsg(`“${word}” ${clue} 기록됨.`);
+  scrollToNext();
 }
 
 function doPumpkin() {
@@ -230,6 +245,7 @@ function doPumpkin() {
   $('pumpkin').value = '';
   render();
   setMsg(`🎃 호박 힌트 “${j}” 적용됨.`);
+  scrollToNext();
 }
 
 async function main() {
