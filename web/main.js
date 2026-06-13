@@ -82,38 +82,6 @@ function renderHistory() {
   });
 }
 
-// 쌍근 게임과 같은 두벌식 키보드 배열 (쌍자음/ㅒㅖ는 윗줄). 자음 19 + 모음 14
-// 전부 포함하며, Rust state().jamo의 키와 동일.
-const JAMO_ROWS = [
-  ['ㅃ', 'ㅉ', 'ㄸ', 'ㄲ', 'ㅆ', 'ㅒ', 'ㅖ'],
-  ['ㅂ', 'ㅈ', 'ㄷ', 'ㄱ', 'ㅅ', 'ㅛ', 'ㅕ', 'ㅑ', 'ㅐ', 'ㅔ'],
-  ['ㅁ', 'ㄴ', 'ㅇ', 'ㄹ', 'ㅎ', 'ㅗ', 'ㅓ', 'ㅏ', 'ㅣ'],
-  ['ㅋ', 'ㅌ', 'ㅊ', 'ㅍ', 'ㅠ', 'ㅜ', 'ㅡ'],
-];
-
-function renderJamo(jamo) {
-  const wrap = $('jamoWrap');
-  const board = $('jamoBoard');
-  // jamo가 비어있으면(추측 전) 보드 숨김.
-  if (!jamo || Object.keys(jamo).length === 0) {
-    wrap.hidden = true;
-    return;
-  }
-  wrap.hidden = false;
-  board.innerHTML = '';
-  JAMO_ROWS.forEach((row) => {
-    const r = document.createElement('div');
-    r.className = 'jamo-row';
-    row.forEach((j) => {
-      const k = document.createElement('span');
-      k.className = `jkey ${jamo[j] || 'maybe'}`;
-      k.textContent = j;
-      r.appendChild(k);
-    });
-    board.appendChild(r);
-  });
-}
-
 let remExpanded = false; // 남은 후보 칩 펼침 여부
 
 // 펼침 토글만 반영 (솔버 재계산 없이 표시만 갱신).
@@ -130,14 +98,14 @@ function render() {
   $('wideBadge').classList.toggle('hidden', !st.using_wide);
   // 추천 헤더에 남은 후보 수를 같이 보여줘 진행 상황이 화면 상단에서 바로 보이게.
   $('recCount').textContent = log.length > 0 ? `· 남은 ${st.remaining_count}개` : '';
-  renderJamo(st.jamo);
 
   // 다음에 칠 단어 (메인 추천). 정답이 아닌 단어라도 후보를 가장 많이 줄이면 위로.
   const sg = $('suggestions');
   sg.innerHTML = '';
   if (log.length === 0) {
-    // 첫 수: 데이터로 검증된 추천 오프닝(관심).
+    // 첫 수: 데이터로 검증된 추천 오프닝(관심). 한 줄 전체폭.
     const li = document.createElement('li');
+    li.className = 'full';
     li.title = '누르면 추측칸에 채워집니다';
     li.innerHTML =
       '<span class="rank">1</span>' +
@@ -147,7 +115,7 @@ function render() {
     sg.appendChild(li);
   } else if (st.suggestions.length === 0) {
     sg.innerHTML =
-      '<li class="empty">일치하는 단어가 없어요. 입력한 힌트를 다시 확인해 보세요.</li>';
+      '<li class="empty full">일치하는 단어가 없어요. 입력한 힌트를 다시 확인해 보세요.</li>';
   } else {
     const n = st.remaining_count;
     // 상위 6개만 — 그 아래는 후보 축소량이 거의 같아 변별이 없음. 전체 가능 단어는 '남은 후보'에.
@@ -159,9 +127,9 @@ function render() {
       li.innerHTML =
         `<span class="rank">${i + 1}</span>` +
         `<span class="w">${s.word}</span>` +
-        // 추천은 전부 정답 가능 후보(Remaining 풀)라 별도 뱃지는 중복이라 생략.
-        // 후보가 2개 이하면 "1개→약1개" 류도 노이즈라 생략.
-        (n > 2 ? `<span class="meta">${n}개 → 약 ${after}개</span>` : '');
+        // 추천은 전부 정답 가능 후보라 뱃지 생략. 메타는 컴팩트하게 "→ N개"(치면 남을 후보 수).
+        // 후보 2개 이하면 노이즈라 생략.
+        (n > 2 ? `<span class="meta">→ ${after}개</span>` : '');
       li.addEventListener('click', () => fillGuess(s.word));
       sg.appendChild(li);
     });

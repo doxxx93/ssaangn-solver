@@ -25,19 +25,19 @@ body {
 main {
   max-width: 560px;
   margin: 0 auto;
-  padding: 22px 16px 48px;
+  padding: 16px 16px 40px;
 }
 
-header h1 { margin: 0 0 4px; font-size: 1.7rem; }
-.sub { margin: 0 0 22px; color: var(--muted); font-size: 0.92rem; }
+header h1 { margin: 0 0 3px; font-size: 1.4rem; }
+.sub { margin: 0 0 14px; color: var(--muted); font-size: 0.84rem; }
 a { color: var(--accent); }
 
 .card {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 14px;
+  margin-bottom: 12px;
 }
 .card.hidden { display: none; }
 .card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -50,7 +50,7 @@ a { color: var(--accent); }
   font-size: 0.9rem; color: var(--muted);
   margin: 4px 0 8px;
 }
-.step:not(:first-child) { margin-top: 18px; }
+.step:not(:first-child) { margin-top: 12px; }
 .num {
   display: inline-flex; align-items: center; justify-content: center;
   width: 20px; height: 20px; border-radius: 50%;
@@ -60,8 +60,8 @@ a { color: var(--accent); }
 
 input[type="text"] {
   width: 100%;
-  font-size: 1.3rem;
-  padding: 12px 14px;
+  font-size: 1.2rem;
+  padding: 10px 14px;
   background: var(--panel-2);
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -70,23 +70,23 @@ input[type="text"] {
 }
 input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
 
-.clues { display: flex; flex-direction: column; gap: 14px; }
-.syl-head { font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
+.clues { display: flex; flex-direction: column; gap: 10px; }
+.syl-head { font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; }
 .syl-head b { color: var(--accent); font-weight: 600; }
 
-.emoji-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 7px; }
+.emoji-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
 .emoji-btn {
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  padding: 9px 2px 7px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 6px 2px 5px;
   background: var(--panel-2);
   border: 1px solid var(--line);
-  border-radius: 11px;
+  border-radius: 10px;
   cursor: pointer;
   line-height: 1;
   transition: transform 0.05s, background 0.1s;
 }
-.emoji-btn .e { font-size: 1.45rem; }
-.emoji-btn .n { font-size: 0.68rem; color: var(--muted); }
+.emoji-btn .e { font-size: 1.25rem; }
+.emoji-btn .n { font-size: 0.62rem; color: var(--muted); }
 .emoji-btn:active { transform: scale(0.93); }
 .emoji-btn.sel {
   background: var(--accent);
@@ -163,24 +163,6 @@ button { font-family: inherit; font-size: 1rem; color: var(--text); }
 }
 .badge.hidden { display: none; }
 
-/* 자모 현황 보드 */
-.jamo-wrap { margin: 24px 0 18px; }
-.jamo-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-.jamo-head h2 { margin: 0; }
-.jamo-legend { color: var(--muted); font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px; }
-.jamo-legend .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; margin-left: 8px; border: 1px solid transparent; }
-.jamo-board { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
-.jamo-row { display: flex; justify-content: center; gap: 5px; }
-.jkey {
-  flex: 1 1 0; max-width: 44px; padding: 7px 0; text-align: center; font-size: 1rem;
-  border-radius: 7px; border: 1px solid var(--line);
-}
-/* 3-state, 쌍근 게임과 같은 색 의미: 확정=주황 / 가능=중립 / 제외=빨강 */
-.jkey.in, .dot.in { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-/* 가능: 카드 배경과 확실히 구분되는 밝은 슬레이트 (확정 주황·제외 빨강과도 별개) */
-.jkey.maybe, .dot.maybe { background: #3a4252; color: var(--text); border-color: #5a6679; }
-.jkey.out, .dot.out { background: #c0392b; color: #fff; border-color: #c0392b; }
-
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 /* .chips가 display:flex라 [hidden] 속성을 덮어쓰므로 명시적으로 숨김 (접기 동작) */
 .chips[hidden] { display: none; }
@@ -194,13 +176,15 @@ button { font-family: inherit; font-size: 1rem; color: var(--text); }
 .sugg-title { margin-top: 22px !important; }
 .sugg-title.first { margin-top: 0 !important; }
 .rec-count { color: var(--muted); font-size: 0.82rem; font-weight: 400; }
-.sugg { margin: 0; padding-left: 0; list-style: none; }
+/* 2열 그리드: 박스가 반폭이 되고 세로 길이도 절반이라 스크롤이 줄어듦 */
+.sugg { margin: 0; padding-left: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .sugg li {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 12px; background: var(--panel-2);
-  border: 1px solid var(--line); border-radius: 9px; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 11px; background: var(--panel-2);
+  border: 1px solid var(--line); border-radius: 9px;
   cursor: pointer;
 }
+.sugg li.full { grid-column: 1 / -1; }  /* 오프닝/안내 줄은 한 줄 전체 */
 .sugg li:hover { border-color: var(--accent); }
 .sugg .rank { color: var(--muted); font-size: 0.85rem; min-width: 1.2em; }
 .sugg .w { font-size: 1.1rem; font-weight: 600; }

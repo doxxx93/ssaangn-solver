@@ -132,56 +132,8 @@ mod wasm_api {
                 "remaining_count": remaining.len(),
                 "remaining": remaining_top,
                 "suggestions": suggestions,
-                "jamo": jamo_status(active),
             })
             .to_string()
         }
-    }
-
-    /// Per-jamo status over the active solver's remaining pool, for the keyboard
-    /// display: a jamo in *every* surviving candidate is confirmed present
-    /// ("in"), one in *no* candidate is ruled out ("out"), the rest are still
-    /// uncertain ("maybe"). Derived from the pool — not the raw clue history — so
-    /// it always agrees with the candidate list shown next to it. Empty when no
-    /// guesses have been recorded (nothing to colour yet).
-    fn jamo_status(active: &Solver) -> serde_json::Value {
-        // Full jamo alphabet the engine reasons over (hangul.rs: compound
-        // vowels/finals are pre-split into these basics; 초성 쌍자음 kept whole).
-        const CONSONANTS: &[char] = &[
-            'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ',
-            'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ',
-        ];
-        const VOWELS: &[char] = &[
-            'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅛ', 'ㅜ', 'ㅠ', 'ㅡ', 'ㅣ',
-        ];
-
-        let total = active.remaining.len();
-        if total == 0 || active.records.is_empty() {
-            return serde_json::json!({});
-        }
-        // Count, per jamo, how many remaining candidates contain it (once each).
-        let mut counts: std::collections::HashMap<char, usize> = std::collections::HashMap::new();
-        for &i in &active.remaining {
-            let w = &active.answers[i];
-            let mut seen: Vec<char> = Vec::with_capacity(8);
-            for &j in w.syl[0].jamos.iter().chain(w.syl[1].jamos.iter()) {
-                if !seen.contains(&j) {
-                    seen.push(j);
-                    *counts.entry(j).or_insert(0) += 1;
-                }
-            }
-        }
-        let status = |j: char| -> &'static str {
-            match counts.get(&j).copied().unwrap_or(0) {
-                0 => "out",
-                c if c == total => "in",
-                _ => "maybe",
-            }
-        };
-        let mut map = serde_json::Map::new();
-        for &j in CONSONANTS.iter().chain(VOWELS.iter()) {
-            map.insert(j.to_string(), serde_json::Value::from(status(j)));
-        }
-        serde_json::Value::Object(map)
     }
 }
